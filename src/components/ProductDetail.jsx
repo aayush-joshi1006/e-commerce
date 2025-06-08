@@ -28,7 +28,7 @@ export default function ProductDetail() {
         </Link>
         <div className="flex justify-between items-center min-w-[50vw] gap-10">
           <div>
-            <img src={currentProduct.thumbnail} alt="" className="w-[30vw]" />
+            <img src={currentProduct.thumbnail} alt="" className="w-[30vw] transition duration-500 hover:scale-105" />
           </div>
           <div className="flex justify-center items-start flex-col w-[35vw]">
             <h2 className="text-3xl font-bold my-3">{currentProduct.title} </h2>

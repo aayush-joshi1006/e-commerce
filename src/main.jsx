@@ -6,7 +6,7 @@ import App from "./App.jsx";
 import { RouterProvider } from "react-router";
 
 import { createBrowserRouter } from "react-router-dom";
-import { lazy } from "react";
+
 import NotFound from "./components/NotFound.jsx";
 
 import { Provider } from "react-redux";

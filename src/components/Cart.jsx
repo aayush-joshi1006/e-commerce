@@ -29,25 +29,33 @@ export default function Cart() {
           <IoMdArrowBack />
           <span>Back to Store</span>
         </Link>
-        <div className="">
-          {cartProducts.map((product) => (
-            <CartItem key={product.id} product={product} />
-          ))}
-        </div>
-        <div className="flex justify-evenly w-full items-center p-4">
-          <span className="text-xl font-bold">
-            Total:$
-            {cartProducts
-              .reduce((acc, cur) => (acc += cur.price * cur.quantity), 0)
-              .toFixed(2)}
-          </span>
-          <Link
-            to="/checkout"
-            className="bg-[#202020] text-xl hover:bg-[#000f9f] px-3 py-2 text-white transition duration-300"
-          >
-            Checkout
-          </Link>
-        </div>
+        {cartProducts <= 0 ? (
+          <div className="text-red-800 font-bold text-lg text-center">
+            Your Cart is Empty. Go back to the store add something and come back
+          </div>
+        ) : (
+          <>
+            <div className="">
+              {cartProducts.map((product) => (
+                <CartItem key={product.id} product={product} />
+              ))}
+            </div>
+            <div className="flex justify-evenly w-full items-center p-4">
+              <span className="text-xl font-bold">
+                Total:$
+                {cartProducts
+                  .reduce((acc, cur) => (acc += cur.price * cur.quantity), 0)
+                  .toFixed(2)}
+              </span>
+              <Link
+                to="/checkout"
+                className="bg-[#202020] text-xl hover:bg-[#000f9f] px-3 py-2 text-white transition duration-300"
+              >
+                Checkout
+              </Link>
+            </div>
+          </>
+        )}
       </div>
     </>
   );

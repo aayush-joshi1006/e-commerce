@@ -3,8 +3,9 @@ import { FaPlus } from "react-icons/fa6";
 import { FaMinus } from "react-icons/fa6";
 import { useDispatch, useSelector } from "react-redux";
 import { addToCart, removeFromCart } from "../utlis/cartSlice";
+import React from "react";
 
-export default function ProductItem({ product }) {
+function ProductItem({ product }) {
   const cart = useSelector((store) => store.cart);
   const quantity = cart[product.id] || 0;
   const dispatch = useDispatch();
@@ -12,7 +13,11 @@ export default function ProductItem({ product }) {
   return (
     <div className="flex justify-between items-center flex-col">
       <div>
-        <img src={product.thumbnail} alt="" />
+        <img
+          src={product.thumbnail}
+          alt=""
+          className="transition duration-500 hover:scale-105"
+        />
         <h2 className="text-center text-lg font-bold">{product.title}</h2>
         <p className="text-center font-extralight italic">{`$${product.price}`}</p>
       </div>
@@ -42,3 +47,5 @@ export default function ProductItem({ product }) {
     </div>
   );
 }
+
+export default React.memo(ProductItem);

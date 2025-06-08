@@ -9,7 +9,7 @@ export default function Header() {
   return (
     <>
       <div>
-        <nav className="flex justify-between items-center border-b-gray-300 border-t-0 border-l-0 border border-r-0 fixed top-0 right-0 left-0 z-10 bg-white p-4 container mx-auto">
+        <nav className="flex justify-between items-center border-b-gray-300 border-t-0 border-l-0 border border-r-0 fixed top-0 right-0 left-0 z-300 bg-white p-4 container mx-auto">
           <div className="flex justify-center items-center gap-6 text-lg mx-3 font-bold ">
             <Link
               to="/"
