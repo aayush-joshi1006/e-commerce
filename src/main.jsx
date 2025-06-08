@@ -1,18 +1,24 @@
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
-import { lazy, Suspense } from "react";
 
 import "./index.css";
 import App from "./App.jsx";
-import { createBrowserRouter } from "react-router-dom";
 import { RouterProvider } from "react-router";
-import NotFound from "./components/NotFound.jsx";
-import Loading from "./components/Loading.jsx";
 
-const HomePage = lazy(() => import("./components/HomePage.jsx"));
-const ProductList = lazy(() => import("./components/ProductList.jsx"));
-const ProductDetail = lazy(() => import("./components/ProductDetail.jsx"));
-const Cart = lazy(() => import("./components/Cart.jsx"));
+import { createBrowserRouter } from "react-router-dom";
+import { lazy } from "react";
+import NotFound from "./components/NotFound.jsx";
+
+import { Provider } from "react-redux";
+import appStore from "./utlis/appStore.js";
+
+import {
+  HomePage,
+  ProductDetail,
+  ProductList,
+  Cart,
+  Checkout,
+} from "./utlis/route.js";
 
 const router = createBrowserRouter([
   {
@@ -22,35 +28,23 @@ const router = createBrowserRouter([
     children: [
       {
         path: "/",
-        element: (
-          <Suspense fallback={<Loading />}>
-            <HomePage />
-          </Suspense>
-        ),
+        element: <HomePage />,
       },
       {
         path: "/store",
-        element: (
-          <Suspense fallback={<Loading />}>
-            <ProductList />
-          </Suspense>
-        ),
+        element: <ProductList />,
       },
       {
         path: "/product/:id",
-        element: (
-          <Suspense fallback={<Loading />}>
-            <ProductDetail />
-          </Suspense>
-        ),
+        element: <ProductDetail />,
       },
       {
         path: "/cart",
-        element: (
-          <Suspense fallback={<Loading />}>
-            <Cart />
-          </Suspense>
-        ),
+        element: <Cart />,
+      },
+      {
+        path: "/checkout",
+        element: <Checkout />,
       },
     ],
   },
@@ -58,8 +52,8 @@ const router = createBrowserRouter([
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>
-    <RouterProvider router={router}>
-      <App />
-    </RouterProvider>
+    <Provider store={appStore}>
+      <RouterProvider router={router} />
+    </Provider>
   </StrictMode>
 );
