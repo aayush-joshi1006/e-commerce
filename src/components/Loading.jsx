@@ -1,9 +1,9 @@
-import React from "react";
-
 export default function Loading() {
   return (
-    <div className="min-h-screen min-w-screen flex justify-center items-center">
-      <h2 className="text-3xl">Loading...</h2>
+    <div className="min-h-screen flex justify-center items-center bg-white">
+      <h2 className="text-3xl font-semibold animate-pulse text-gray-700">
+        Loading...
+      </h2>
     </div>
   );
 }

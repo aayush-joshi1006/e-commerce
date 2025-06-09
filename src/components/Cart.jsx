@@ -1,4 +1,3 @@
-import React from "react";
 import { useSelector } from "react-redux";
 import CartItem from "./CartItem";
 import { Link } from "react-router-dom";
@@ -29,13 +28,13 @@ export default function Cart() {
           <IoMdArrowBack />
           <span>Back to Store</span>
         </Link>
-        {cartProducts <= 0 ? (
+        {cartProducts.length <= 0 ? (
           <div className="text-red-800 font-bold text-lg text-center">
             Your Cart is Empty. Go back to the store add something and come back
           </div>
         ) : (
           <>
-            <div className="">
+            <div className="mt-10">
               {cartProducts.map((product) => (
                 <CartItem key={product.id} product={product} />
               ))}

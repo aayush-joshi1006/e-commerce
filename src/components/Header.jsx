@@ -26,7 +26,7 @@ export default function Header() {
           </div>
           <div className="flex justify-center items-center gap-1 text-xl font-bold">
             <img
-              src="../public/shopping-icon.png"
+              src="../shopping-icon.png"
               alt="ShoopyGlobe Icon"
               className="w-7"
             />

@@ -1,4 +1,3 @@
-import React from "react";
 import { Link } from "react-router-dom";
 
 export default function Footer() {
@@ -7,7 +6,7 @@ export default function Footer() {
       <div className="flex justify-center items-center gap-2 cursor-pointer">
         <h2 className="text-xl font-bold">ShoppyGlobe</h2>
         <img
-          src="../public/shopping-icon.png"
+          src="../shopping-icon.png"
           alt="ShoppyGlobe Logo"
           className="w-7"
         />

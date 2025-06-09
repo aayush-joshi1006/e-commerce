@@ -1,8 +1,6 @@
 import { Link } from "react-router-dom";
-import { FaPlus } from "react-icons/fa6";
-import { FaMinus } from "react-icons/fa6";
 import { useDispatch, useSelector } from "react-redux";
-import { addToCart, removeFromCart } from "../utlis/cartSlice";
+import { addToCart } from "../utlis/cartSlice";
 import React from "react";
 
 function ProductItem({ product }) {
@@ -11,38 +9,32 @@ function ProductItem({ product }) {
   const dispatch = useDispatch();
 
   return (
-    <div className="flex justify-between items-center flex-col">
-      <div>
+    <div className="flex flex-col justify-between items-center w-full px-3 py-5">
+      <div className="w-full">
         <img
           src={product.thumbnail}
-          alt=""
-          className="transition duration-500 hover:scale-105"
+          alt={product.title}
+          onError={(e) => (e.target.src = "../src/assets/fallback.png")}
+          className="transition duration-500 hover:scale-105 w-full h-auto object-cover"
         />
-        <h2 className="text-center text-lg font-bold">{product.title}</h2>
+        <h2 className="text-center text-lg font-bold mt-3">{product.title}</h2>
         <p className="text-center font-extralight italic">{`$${product.price}`}</p>
       </div>
-      <div className="flex justify-evenly items-center gap-2 mt-6 w-full">
+
+      <div className="flex flex-col sm:flex-row justify-evenly items-center gap-2 mt-6 w-full">
         <Link
           to={`/product/${product.id}`}
-          className="bg-[#202020] hover:bg-[#000f9f] px-3 py-2 text-white transition duration-300"
+          className="bg-[#202020] hover:bg-[#000f9f] px-3 py-2 text-white transition duration-300 text-center w-full sm:w-auto"
         >
           View details
         </Link>
-        <div className="flex justify-center items-center gap-4">
-          <button
-            onClick={() => dispatch(removeFromCart(product.id))}
-            className="p-1 rounded-full bg-amber-500 hover:bg-amber-400"
-          >
-            <FaMinus />
-          </button>
-          <span>{quantity}</span>
-          <button
-            onClick={() => dispatch(addToCart(product.id))}
-            className="p-1 rounded-full bg-amber-500 hover:bg-amber-400"
-          >
-            <FaPlus />
-          </button>
-        </div>
+
+        <button
+          onClick={() => dispatch(addToCart(product.id))}
+          className="bg-[#202020] hover:bg-[#000f9f] px-3 py-2 text-white transition duration-300 text-center w-full sm:w-auto"
+        >
+          Add to Cart
+        </button>
       </div>
     </div>
   );
