@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { clearCart } from "../utlis/cartSlice";
 import { Link } from "react-router-dom";
 import { IoMdArrowBack } from "react-icons/io";
+import { ToastContainer, toast } from "react-toastify";
 
 export default function Checkout() {
   const products = useSelector((store) => store.products.data);
@@ -21,13 +22,21 @@ export default function Checkout() {
     []
   );
 
-  if (cartProducts.length <= 0) {
-    navigate("/");
-  }
-
   return (
     <>
       <div className="mt-24 container mx-auto relative flex justify-center items-center flex-col min-h-[90vh] px-4">
+        <ToastContainer
+          position="top-right"
+          autoClose={2000}
+          hideProgressBar={false}
+          newestOnTop={false}
+          closeOnClick={false}
+          rtl={false}
+          pauseOnFocusLoss
+          draggable
+          pauseOnHover
+          theme="dark"
+        />
         <Link
           to="/cart"
           className="absolute top-2 left-2 flex justify-center items-center gap-1 hover:text-[#000f9f]"
@@ -47,7 +56,7 @@ export default function Checkout() {
                   src={product.thumbnail}
                   className="w-40 sm:w-44"
                   alt={product.title}
-                  onError={(e) => (e.target.src = "../src/assets/fallback.png")}
+                  onError={(e) => (e.target.src = "/src/assets/fallback.png")}
                 />
               </div>
 
@@ -73,8 +82,20 @@ export default function Checkout() {
           <button
             className="bg-[#202020] text-xl hover:bg-[#000f9f] px-3 py-2 text-white transition duration-300"
             onClick={() => {
-              dispatch(clearCart());
-              navigate("/store");
+              toast("✅ Payment successful! Redirecting to store...", {
+                position: "top-right",
+                autoClose: 2000,
+                hideProgressBar: false,
+                closeOnClick: false,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "dark",
+              });
+              setTimeout(() => {
+                navigate("/store");
+                dispatch(clearCart());
+              }, 2000);
             }}
           >
             Pay Amount

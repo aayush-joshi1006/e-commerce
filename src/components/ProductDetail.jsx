@@ -4,6 +4,7 @@ import { FaPlus, FaStar } from "react-icons/fa6";
 import { FaMinus } from "react-icons/fa6";
 import { addToCart, removeFromCart } from "../utlis/cartSlice";
 import { IoMdArrowBack } from "react-icons/io";
+import { ToastContainer, toast } from "react-toastify";
 
 export default function ProductDetail() {
   let { id } = useParams();
@@ -24,6 +25,18 @@ export default function ProductDetail() {
 
   return (
     <div className="mt-24 min-h-[85vh] container mx-auto px-4 relative my-5">
+      <ToastContainer
+        position="top-right"
+        autoClose={2000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick={false}
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="dark"
+      />
       <Link
         to="/store"
         className="absolute top-2 left-2 flex items-center gap-1 hover:text-[#000f9f]"
@@ -76,7 +89,19 @@ export default function ProductDetail() {
 
           <div className="mt-4 flex flex-col sm:flex-row justify-between items-center w-full gap-4">
             <button
-              onClick={() => dispatch(addToCart(id))}
+              onClick={() => {
+                dispatch(addToCart(id));
+                toast("Item added to cart", {
+                  position: "top-right",
+                  autoClose: 2000,
+                  hideProgressBar: false,
+                  closeOnClick: false,
+                  pauseOnHover: true,
+                  draggable: true,
+                  progress: undefined,
+                  theme: "dark",
+                });
+              }}
               className="bg-[#202020] hover:bg-[#000f9f] px-4 py-2 text-white transition duration-300 w-full sm:w-auto"
             >
               Add to Cart
@@ -86,13 +111,37 @@ export default function ProductDetail() {
               <button
                 disabled={quantity === 0}
                 className="p-1 rounded-full bg-amber-500 hover:bg-amber-400 disabled:opacity-40"
-                onClick={() => dispatch(removeFromCart(id))}
+                onClick={() => {
+                  dispatch(removeFromCart(id));
+                  toast("Item removed from cart", {
+                    position: "top-right",
+                    autoClose: 2000,
+                    hideProgressBar: false,
+                    closeOnClick: false,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                    theme: "dark",
+                  });
+                }}
               >
                 <FaMinus />
               </button>
               <span>{quantity}</span>
               <button
-                onClick={() => dispatch(addToCart(id))}
+                onClick={() => {
+                  dispatch(addToCart(id));
+                  toast("Item added to cart", {
+                    position: "top-right",
+                    autoClose: 2000,
+                    hideProgressBar: false,
+                    closeOnClick: false,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                    theme: "dark",
+                  });
+                }}
                 className="p-1 rounded-full bg-amber-500 hover:bg-amber-400"
               >
                 <FaPlus />
