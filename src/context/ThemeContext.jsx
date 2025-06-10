@@ -1,0 +1,34 @@
+import { createContext, useEffect, useState } from "react";
+
+export const ThemeContext = createContext();
+
+export default function ThemeProvider({ children }) {
+  const [darkMode, setDarkMode] = useState(() => {
+    // Try to read saved theme from localStorage
+    const savedTheme = localStorage.getItem("theme");
+    if (savedTheme === "dark") return true;
+    if (savedTheme === "light") return false;
+
+    // If no saved preference, fallback to OS preference
+    return window.matchMedia("(prefers-color-scheme: dark)").matches;
+  });
+
+  useEffect(() => {
+    // Update data-theme attribute on <html>
+    document.documentElement.setAttribute(
+      "data-theme",
+      darkMode ? "dark" : "light"
+    );
+
+    // Persist the preference
+    localStorage.setItem("theme", darkMode ? "dark" : "light");
+
+    console.log("Dark mode changed to:", darkMode);
+  }, [darkMode]);
+
+  return (
+    <ThemeContext.Provider value={{ darkMode, setDarkMode }}>
+      {children}
+    </ThemeContext.Provider>
+  );
+}

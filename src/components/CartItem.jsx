@@ -10,7 +10,7 @@ export default function CartItem({ product }) {
   const dispatch = useDispatch();
 
   return (
-    <div className="flex flex-col sm:flex-row justify-evenly items-center sm:w-[40vw] w-full bg-[#f9f9f9] p-3 m-2 gap-4">
+    <div className="flex flex-col sm:flex-row justify-evenly items-center w-full bg-[#f9f9f9] dark:bg-gray-800 p-3 m-2 gap-4 transition-colors duration-300">
       <ToastContainer
         position="top-right"
         autoClose={2000}
@@ -21,18 +21,18 @@ export default function CartItem({ product }) {
         pauseOnFocusLoss
         draggable
         pauseOnHover
-        theme="light"
+        theme="dark"
       />
       <div className="w-full sm:w-auto flex justify-center">
         <img
           src={product.thumbnail}
           alt={product.title}
           onError={(e) => (e.target.src = "../src/assets/fallback.png")}
-          className="w-40 sm:w-52 object-contain"
+          className="w-40 sm:w-52 object-contain rounded"
         />
       </div>
 
-      <div className="flex flex-col justify-center items-end text-center sm:text-right sm:items-end gap-2 w-full sm:w-[20vw]">
+      <div className="flex flex-col justify-center items-center sm:items-end text-center sm:text-right gap-2 w-full sm:w-[20vw] text-gray-900 dark:text-gray-100">
         <h2 className="text-lg font-semibold">{product.title}</h2>
         <div className="flex justify-center items-center gap-4">
           <button
@@ -49,11 +49,12 @@ export default function CartItem({ product }) {
                 theme: "dark",
               });
             }}
-            className="p-1 rounded-full bg-amber-500 hover:bg-amber-400"
+            className="p-1 rounded-full bg-amber-500 hover:bg-amber-400 text-white transition duration-300"
+            aria-label="Remove item"
           >
             <FaMinus />
           </button>
-          <span>{quantity}</span>
+          <span className="text-lg font-medium">{quantity}</span>
           <button
             onClick={() => {
               dispatch(addToCart(product.id));
@@ -68,7 +69,8 @@ export default function CartItem({ product }) {
                 theme: "dark",
               });
             }}
-            className="p-1 rounded-full bg-amber-500 hover:bg-amber-400"
+            className="p-1 rounded-full bg-amber-500 hover:bg-amber-400 text-white transition duration-300"
+            aria-label="Add item"
           >
             <FaPlus />
           </button>

@@ -26,11 +26,13 @@ function App() {
 
   return (
     <>
-      <Header />
-      <Suspense fallback={<Loading />}>
-        <Outlet />
-      </Suspense>
-      <Footer />
+      <div className="dark:bg-gray-900 min-h-screen">
+        <Header />
+        <Suspense fallback={<Loading />}>
+          <Outlet />
+        </Suspense>
+        <Footer />
+      </div>
     </>
   );
 }

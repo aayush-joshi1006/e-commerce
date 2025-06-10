@@ -8,7 +8,12 @@ function ProductItem({ product }) {
   const dispatch = useDispatch();
 
   return (
-    <div className="flex flex-col justify-between items-center w-full px-3 py-5">
+    <div
+      className="flex flex-col justify-between items-center w-full px-3 py-5 
+      bg-white dark:bg-gray-800 
+      text-gray-900 dark:text-gray-100 
+      transition-colors duration-300"
+    >
       <ToastContainer
         position="top-right"
         autoClose={2000}
@@ -19,14 +24,15 @@ function ProductItem({ product }) {
         pauseOnFocusLoss
         draggable
         pauseOnHover
-        theme="light"
+        theme="dark"
       />
+
       <div className="w-full">
         <img
           src={product.thumbnail}
           alt={product.title}
           onError={(e) => (e.target.src = "../src/assets/fallback.png")}
-          className="transition duration-500 hover:scale-105 w-full h-auto object-cover"
+          className="transition duration-500 hover:scale-105 w-full h-auto object-cover rounded"
         />
         <h2 className="text-center text-lg font-bold mt-3">{product.title}</h2>
         <p className="text-center font-extralight italic">{`$${product.price}`}</p>
@@ -50,7 +56,6 @@ function ProductItem({ product }) {
               closeOnClick: false,
               pauseOnHover: true,
               draggable: true,
-              progress: undefined,
               theme: "dark",
             });
           }}

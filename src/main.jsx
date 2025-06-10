@@ -19,6 +19,7 @@ import {
   Cart,
   Checkout,
 } from "./utlis/route.js";
+import ThemeProvider from "./context/ThemeContext.jsx";
 
 const router = createBrowserRouter([
   {
@@ -53,7 +54,9 @@ const router = createBrowserRouter([
 createRoot(document.getElementById("root")).render(
   <StrictMode>
     <Provider store={appStore}>
-      <RouterProvider router={router} />
+      <ThemeProvider>
+        <RouterProvider router={router} />
+      </ThemeProvider>
     </Provider>
   </StrictMode>
 );
