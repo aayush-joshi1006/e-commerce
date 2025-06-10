@@ -1,16 +1,19 @@
+/* import for font family */
 @import url("https://fonts.googleapis.com/css2?family=Source+Code+Pro:ital,wght@0,200..900;1,200..900&display=swap");
 @import "tailwindcss";
 
+/* for applying dark mode */
 @custom-variant dark (&:where([data-theme=dark], [data-theme=dark] *));
 
+/* adding transition in loading of html doc */
 html {
   transition: all 0.3s ease-in-out;
 }
 
+/* font family properties */
 .source-code-pro-500 {
   font-family: "Source Code Pro", monospace;
   font-optical-sizing: auto;
   font-weight: 500;
   font-style: normal;
 }
-

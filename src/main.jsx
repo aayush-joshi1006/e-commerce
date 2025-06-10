@@ -19,8 +19,10 @@ import {
   Cart,
   Checkout,
 } from "./utlis/route.js";
+
 import ThemeProvider from "./context/ThemeContext.jsx";
 
+// router method
 const router = createBrowserRouter([
   {
     path: "/",
@@ -53,8 +55,11 @@ const router = createBrowserRouter([
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>
+    {/* for providing redux store to all components inside it */}
     <Provider store={appStore}>
+      {/* for providing theme to all componets */}
       <ThemeProvider>
+        {/* router component */}
         <RouterProvider router={router} />
       </ThemeProvider>
     </Provider>

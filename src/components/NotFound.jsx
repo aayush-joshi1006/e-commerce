@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 
 export default function NotFound() {
   return (
+    // Page not found component
     <div
       className="min-h-screen flex flex-col justify-center items-center text-center 
       bg-white dark:bg-gray-900 
@@ -11,6 +12,7 @@ export default function NotFound() {
     >
       <h1 className="text-5xl font-bold text-red-500 mb-4">404</h1>
       <p className="text-lg mb-6">Oops! Page not found.</p>
+     {/* Link for going back to the home page */}
       <Link
         to="/"
         className="bg-[#202020] hover:bg-[#000f9f] text-white px-4 py-2 rounded transition duration-300"

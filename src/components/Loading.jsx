@@ -1,5 +1,6 @@
 export default function Loading() {
   return (
+    // loading component
     <div
       className="min-h-screen flex justify-center items-center 
       bg-white dark:bg-gray-900 

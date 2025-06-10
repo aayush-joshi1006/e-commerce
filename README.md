@@ -1,12 +1,147 @@
-# React + Vite
+# ShoppyGlobe
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+**ShoppyGlobe** is a modern, responsive e-commerce web application built using React, Redux, and Tailwind CSS. It offers a seamless shopping experience with features like product browsing, detailed product views, cart management, dark mode, and a smooth checkout flow.
 
-Currently, two official plugins are available:
+---
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Features
 
-## Expanding the ESLint configuration
+- **Home Page** with featured products
+- **Product Listing** with grid layout
+- **Product Details** with tags, ratings, and image fallback
+- **Cart Management** (add/remove/adjust quantity)
+- **Dark Mode Toggle**
+- **Checkout Page**
+- Lazy loading for optimized performance
+- State management via **Redux Toolkit**
+- Toast notifications for user actions
+- Fully responsive design using **Tailwind CSS**
+- Error handling for missing products or broken images
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+---
+
+## Tech Stack
+
+- **Frontend:** React, Tailwind CSS
+- **Routing:** React Router
+- **State Management:** Redux Toolkit
+- **Icons:** React Icons
+- **Notifications:** React Toastify
+
+---
+
+## Screenshots
+
+![screenshot](./public/Screenshot1.png)
+
+---
+
+![screenshot](./public/Screenshot2.png)
+
+---
+
+![screenshot](./public/Screenshot3.png)
+
+---
+
+![screenshot](./public/Screenshot4.png)
+
+---
+
+![screenshot](./public/Screenshot5.png)
+
+---
+
+## Folder Structure
+
+```bash
+src/
+├── components/
+│ ├── Cart.jsx
+│ ├── CartItem.jsx
+│ ├── Checkout.jsx
+│ ├── Footer.jsx
+│ ├── Header.jsx
+│ ├── HomePage.jsx
+│ ├── Loading.jsx
+│ ├── NotFound.jsx
+│ ├── ProductDetail.jsx
+│ ├── ProductItem.jsx
+│ └── ProductList.jsx
+├── utils/
+│ ├── appStore.js
+│ ├── cartSlice.js
+│ ├── productsSlice.js
+│ ├── route.js
+│ └── useFetch.js
+├── assets/
+│ └── fallback.png
+├── context/
+│ └── ThemeContext.jsx
+├── index.css
+├── main.jsx
+└── App.jsx
+```
+
+---
+
+## Setup Instructions
+
+1. **Clone the repository**
+
+```bash
+git clone https://github.com/aayush-joshi1006/e-commerce
+cd shoppyglobe
+```
+
+2. Install dependencies
+
+```bash
+npm install
+```
+
+4. Run the development server
+
+```bash
+npm run dev
+```
+
+5. Build for production
+
+```bash
+npm run build
+```
+
+6. Future Enhancements
+
+- Product search & filters
+
+- Authentication (Login/Register)
+
+- Persistent cart (localStorage or backend)
+
+- Payment integration
+
+- Admin dashboard for product management
+
+---
+
+## Author
+
+Aayush Joshi
+
+aayushjoshi1006@gmail.com
+
+---
+
+#### Project link:- [https://github.com/aayush-joshi1006/e-commerce](https://github.com/aayush-joshi1006/e-commerce)
+
+---
+
+## License
+
+This project is licensed under the MIT License.
+
+---
+
+Your one-stop shop for trending products at unbeatable prices.” — ShoppyGlobe
