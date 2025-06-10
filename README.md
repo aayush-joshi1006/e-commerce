@@ -32,15 +32,7 @@
 
 ## Screenshots
 
-![screenshot](./public/Screenshot1.png)
-
----
-
-![screenshot](./public/Screenshot2.png)
-
----
-
-![screenshot](./public/Screenshot3.png)
+![screenshot](./public/Screenshot5.png)
 
 ---
 
@@ -48,7 +40,15 @@
 
 ---
 
-![screenshot](./public/Screenshot5.png)
+![screenshot](./public/Screenshot3.png)
+
+---
+
+![screenshot](./public/Screenshot2.png)
+
+---
+
+![screenshot](./public/Screenshot1.png)
 
 ---
 
