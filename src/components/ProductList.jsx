@@ -60,8 +60,13 @@ export default function ProductList() {
         {/* check condition if the filteredStore ahve items in it or not */}
         {filteredStore.length <= 0 ? (
           // in case there are no products in the filteredStore
-          <div className="min-h-[70vh] flex items-center justify-center text-2xl font-bold text-red-800 dark:text-red-400 w-[90vw] text-center">
-            No products found
+          // <div className="min-h-[70vh] flex items-center justify-center text-2xl font-bold text-red-800 dark:text-red-400 text-center self-center">
+          //   No products found
+          // </div>
+          <div className="lg:col-span-3 col-span-1 flex justify-center items-center min-h-[70vh]">
+            <div className="text-2xl font-bold text-red-800 dark:text-red-400 text-center">
+              No products found
+            </div>
           </div>
         ) : (
           renderedProducts
