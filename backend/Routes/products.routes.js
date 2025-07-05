@@ -3,9 +3,12 @@ import {
   getSingleProduct,
   postProducts,
 } from "../Controller/products.controller.js";
+import express from "express";
 
-export function productRoutes(app) {
-  app.get("/api/products", getProducts);
-  app.get("/api/products/:id", getSingleProduct);
-  app.post("/api/product", postProducts);
-}
+const productRoute = express.Router();
+
+productRoute.get("/", getProducts);
+productRoute.get("/:id", getSingleProduct);
+productRoute.post("/", postProducts);
+
+export default productRoute;
