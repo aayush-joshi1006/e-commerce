@@ -9,6 +9,8 @@ import { addToCart, removeFromCart } from "../utlis/cartSlice";
 
 import { toast } from "react-toastify";
 
+import {useMemo} from "react"
+
 export default function ProductDetail() {
   // getting id of the utem from url
   let { id } = useParams();
@@ -20,7 +22,9 @@ export default function ProductDetail() {
   const dispatch = useDispatch();
 
   // finding the current product by matching id from url to hte product list
-  let currentProduct = products.find((product) => product.id === Number(id));
+  const currentProduct = useMemo(() => {
+    return products?.find((product) => product._id === id);
+  }, [products, id]);
   // setting value of quantity to zero if  it is not there in cart
   let quantity = cart[id] || 0;
 
@@ -75,7 +79,7 @@ export default function ProductDetail() {
           <div className="flex flex-wrap justify-between items-center w-full px-0 mt-4">
             <div className="flex flex-wrap gap-2 my-3">
               {/* mapping tags present in the poduct tag list */}
-              {currentProduct.tags.map((tag, index) => (
+              {currentProduct.tags?.map((tag, index) => (
                 <span
                   key={index}
                   className="bg-gray-300 dark:bg-gray-700 px-2 py-1 rounded-xl hover:bg-gray-200 dark:hover:bg-gray-600 cursor-pointer"

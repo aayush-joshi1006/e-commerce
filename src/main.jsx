@@ -18,6 +18,8 @@ import {
   ProductList,
   Cart,
   Checkout,
+  Login,
+  SignUp,
 } from "./utlis/route.js";
 
 import ThemeProvider from "./context/ThemeContext.jsx";
@@ -32,6 +34,14 @@ const router = createBrowserRouter([
       {
         path: "/",
         element: <HomePage />,
+      },
+      {
+        path: "/login",
+        element: <Login />,
+      },
+      {
+        path: "/signup",
+        element: <SignUp />,
       },
       {
         path: "/store",
@@ -54,7 +64,8 @@ const router = createBrowserRouter([
 ]);
 
 createRoot(document.getElementById("root")).render(
-  <StrictMode>
+  // <StrictMode>
+  <>
     {/* for providing redux store to all components inside it */}
     <Provider store={appStore}>
       {/* for providing theme to all componets */}
@@ -63,5 +74,6 @@ createRoot(document.getElementById("root")).render(
         <RouterProvider router={router} />
       </ThemeProvider>
     </Provider>
-  </StrictMode>
+  </>
+  // </StrictMode>
 );

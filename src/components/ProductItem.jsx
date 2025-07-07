@@ -36,7 +36,7 @@ function ProductItem({ product }) {
       <div className="flex flex-col sm:flex-row justify-evenly items-center gap-2 mt-6 w-full">
         {/* view details page for that product */}
         <Link
-          to={`/product/${product.id}`}
+          to={`/product/${product._id}`}
           className="bg-[#202020] hover:bg-[#000f9f] px-3 py-2 text-white transition duration-300 text-center w-full sm:w-auto"
         >
           View details

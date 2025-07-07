@@ -12,11 +12,15 @@ export default function ProductList() {
   // state for managing the lsit of products based on the condition
   const [filteredStore, setFilteredStore] = useState([]);
 
+  const tempStore = useMemo(() => {
+    return Array.isArray(products) ? products : [];
+  }, [products]);
+
   useEffect(() => {
     // searched term
     const trimmedSearch = searchValue.trim().toLowerCase();
     // set a temporary store for the collection of items it product list is not defined set it to a empty array
-    const tempStore = Array.isArray(products) ? products : [];
+    
 
     // adding debounce effect so that the componet does not render on each searched term insead based on interval of time
     const debounce = setTimeout(() => {
@@ -38,7 +42,7 @@ export default function ProductList() {
   // svaing the rendered product in useMemo so re-calculation does not occur for the searched term
   const renderedProducts = useMemo(() => {
     return filteredStore.map((product) => (
-      <ProductItem key={product.id} product={product} />
+      <ProductItem key={product._id} product={product} />
     ));
   }, [filteredStore]);
 

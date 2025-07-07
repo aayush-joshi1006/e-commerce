@@ -8,3 +8,5 @@ export const ProductDetail = lazy(() =>
 );
 export const Cart = lazy(() => import("../components/Cart.jsx"));
 export const Checkout = lazy(() => import("../components/Checkout.jsx"));
+export const Login = lazy(() => import("../components/Login.jsx"));
+export const SignUp = lazy(() => import("../components/SignUp.jsx"));

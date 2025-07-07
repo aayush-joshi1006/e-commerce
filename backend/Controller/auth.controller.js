@@ -19,15 +19,12 @@ export const registerUser = async (req, res) => {
       password: hashedPassword,
     });
 
-    return (
-      res.status(201),
-      json({
-        _id: newUser._id,
-        name: newUser.name,
-        email: newUser.email,
-        token: generateToken(newUser._id),
-      })
-    );
+    return res.status(201).json({
+      _id: newUser._id,
+      name: newUser.name,
+      email: newUser.email,
+      token: generateToken(newUser._id),
+    });
   } catch (error) {
     res
       .status(500)

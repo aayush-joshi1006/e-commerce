@@ -38,12 +38,14 @@ import connectDB from "./config/db.js";
 import productRoute from "./Routes/products.routes.js";
 import cartRoute from "./Routes/cart.routes.js";
 import authRouter from "./Routes/auth.routes.js";
+import cors from "cors";
 
 dotenv.config();
 connectDB();
 
 const app = express();
 app.use(express.json());
+app.use(cors());
 
 app.use("/products", productRoute);
 app.use("/auth", authRouter);
