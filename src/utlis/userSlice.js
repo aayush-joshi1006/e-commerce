@@ -1,5 +1,30 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 
+export const registerUser = createAsyncThunk(
+  "user/registerUser",
+  async ({ name, email, password }, thunkAPI) => {
+    try {
+      const res = await fetch("http://localhost:8080/auth/register", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ name, email, password }),
+      });
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        return thunkAPI.rejectWithValue(data.message || "Registration failed");
+      }
+
+      return data;
+    } catch (error) {
+      return thunkAPI.rejectWithValue("Network Error");
+    }
+  }
+);
+
 export const loginUser = createAsyncThunk(
   "user/loginUser",
   async ({ email, password }, thunkAPI) => {
@@ -51,6 +76,19 @@ const userSlice = createSlice({
         state.token = action.payload.token;
       })
       .addCase(loginUser.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+      })
+      .addCase(registerUser.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(registerUser.fulfilled, (state, action) => {
+        state.loading = false;
+        state.user = action.payload.user;
+        state.token = action.payload.token;
+      })
+      .addCase(registerUser.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
       });

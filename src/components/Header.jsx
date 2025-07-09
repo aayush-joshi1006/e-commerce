@@ -14,6 +14,11 @@ export default function Header() {
   // getting number of items in the cart
   let cartTotal = Object.values(cart).reduce((sum, qty) => sum + qty, 0);
 
+  // getting current user
+  const user = useSelector((store) => store.user);
+
+  console.log(user);
+
   // extracting the state of darkmode and set method for switching dark mode from ThemeContext
   const { darkMode, setDarkMode } = useContext(ThemeContext);
 
@@ -54,6 +59,21 @@ export default function Header() {
         {/* Right - Cart + Toggle */}
         {/* Cart component */}
         <div className="flex justify-center items-center gap-2 mx-3">
+          {user.token ? (
+            `welcone ${user.user.email.split("@")[0]}`
+          ) : (
+            <Link
+              to="/login"
+              className="bg-[#202020] hover:bg-[#000f9f] px-3 py-2 text-white transition duration-300
+              dark:bg-gray-700 dark:hover:bg-blue-700
+            "
+            >
+              {user.token
+                ? `welcone ${user.user.email.split("@")[0]}`
+                : "LogIn"}
+            </Link>
+          )}
+
           <Link
             to="/cart"
             className="text-3xl p-1 rounded-full hover:bg-gray-200 dark:hover:bg-gray-700 relative"

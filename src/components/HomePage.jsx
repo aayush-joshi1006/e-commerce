@@ -84,7 +84,7 @@ export default function HomePage() {
         {/* Mapping the popular products */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 xl:grid-cols-4 gap-4 my-4 pb-5 w-full">
           {popularProducts.map((product) => (
-            <ProductItem key={product.id} product={product} />
+            <ProductItem key={product._id} product={product} />
           ))}
         </div>
       </section>

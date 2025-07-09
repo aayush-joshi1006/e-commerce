@@ -9,7 +9,8 @@ import { addToCart, removeFromCart } from "../utlis/cartSlice";
 
 import { toast } from "react-toastify";
 
-import {useMemo} from "react"
+import { useMemo } from "react";
+import { addToCartAsync, removeFromCartAsync } from "../utlis/cartThunks";
 
 export default function ProductDetail() {
   // getting id of the utem from url
@@ -26,7 +27,9 @@ export default function ProductDetail() {
     return products?.find((product) => product._id === id);
   }, [products, id]);
   // setting value of quantity to zero if  it is not there in cart
-  let quantity = cart[id] || 0;
+  let cartItem = cart.find((item) => item.productId === id);
+  let quantity = cartItem ? cartItem.quantity : 0;
+  // let quantity = cart[id] || 0;
 
   // giving product not found message in case the id does not matches
   if (!currentProduct) {
@@ -106,7 +109,7 @@ export default function ProductDetail() {
             <button
               onClick={() => {
                 // updating cart in the redux store
-                dispatch(addToCart(id));
+                dispatch(addToCartAsync(id));
                 // toast message showing item added to the cart
                 toast("Item added to cart");
               }}
@@ -121,11 +124,17 @@ export default function ProductDetail() {
                 // button disabled when the cart is empty
                 disabled={quantity === 0}
                 className="p-1 rounded-full bg-amber-500 hover:bg-amber-400 disabled:opacity-40"
+                // onClick={() => {
+                //   // updating cart in the redux store
+                //   dispatch(removeFromCartAsync(cartItem._id));
+                //   // toast message showing item removed from the cart
+                //   toast("Item removed from cart");
+                // }}
                 onClick={() => {
-                  // updating cart in the redux store
-                  dispatch(removeFromCart(id));
-                  // toast message showing item removed from the cart
-                  toast("Item removed from cart");
+                  if (cartItem?._id) {
+                    dispatch(removeFromCartAsync(cartItem._id));
+                    toast("Item removed from cart");
+                  }
                 }}
               >
                 <FaMinus />
@@ -134,7 +143,7 @@ export default function ProductDetail() {
               <button
                 onClick={() => {
                   // updating cart in the redux store
-                  dispatch(addToCart(id));
+                  dispatch(addToCartAsync(id));
                   // toast message showing item added to the cart
                   toast("Item added to cart");
                 }}
