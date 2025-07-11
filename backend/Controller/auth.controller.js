@@ -19,13 +19,23 @@ export const registerUser = async (req, res) => {
       password: hashedPassword,
     });
 
+    const token = generateToken(newUser._id);
+
+    // ✅ Set cookie
+    res.cookie("token", token, {
+      httpOnly: true,
+      sameSite: "Lax",
+      secure: false,
+      maxAge: 7 * 24 * 60 * 60 * 1000,
+    });
+
     return res.status(201).json({
       user: {
         _id: newUser._id,
         name: newUser.name,
         email: newUser.email,
       },
-      token: generateToken(newUser._id),
+      token,
     });
   } catch (error) {
     res
@@ -46,13 +56,22 @@ export const loginUser = async (req, res) => {
       return res.status(401).json({ message: "Invalid credentials" });
     }
 
+    const token = generateToken(user._id);
+
+    res.cookie("token", token, {
+      httpOnly: true,
+      sameSite: "Lax", // Or 'None' if you're testing on cross-origin + HTTPS
+      secure: false, // Set to true in production with HTTPS
+      maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
+    });
+
     return res.status(200).json({
       user: {
         _id: user._id,
         name: user.name,
         email: user.email,
       },
-      token: generateToken(user._id),
+      token,
     });
   } catch (error) {
     return res

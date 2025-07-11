@@ -9,6 +9,7 @@ export const registerUser = createAsyncThunk(
         headers: {
           "Content-Type": "application/json",
         },
+        credentials: "include",
         body: JSON.stringify({ name, email, password }),
       });
 
@@ -34,6 +35,7 @@ export const loginUser = createAsyncThunk(
         headers: {
           "Content-Type": "application/json",
         },
+        credentials: "include",
         body: JSON.stringify({ email, password }),
       });
 

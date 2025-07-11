@@ -12,8 +12,16 @@ const cartRoute = express.Router();
 
 cartRoute.get("/", protect, getCartItems);
 cartRoute.post("/", protect, addToCart);
-cartRoute.put("/:id", protect, updateCart);
-cartRoute.patch("/:id", protect, updateQuantity);
+cartRoute.put("/:id", protect, updateQuantity);
+// cartRoute.patch(
+//   "/:id",
+//   protect,
+//   (req, res, next) => {
+//     console.log("PATCH /cart/:id called");
+//     next();
+//   },
+//   updateQuantity
+// );
 cartRoute.delete("/:id", protect, deleteCartItem);
 
 export default cartRoute;

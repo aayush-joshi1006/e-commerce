@@ -6,11 +6,11 @@ import { FaPlus, FaStar, FaMinus } from "react-icons/fa6";
 import { IoMdArrowBack } from "react-icons/io";
 
 import { addToCart, removeFromCart } from "../utlis/cartSlice";
+import { addToCartAPI, removeFromCartAPI } from "../utlis/cartAPI";
 
 import { toast } from "react-toastify";
 
-import { useMemo } from "react";
-import { addToCartAsync, removeFromCartAsync } from "../utlis/cartThunks";
+import { useMemo, useEffect } from "react";
 
 export default function ProductDetail() {
   // getting id of the utem from url
@@ -28,6 +28,7 @@ export default function ProductDetail() {
   }, [products, id]);
   // setting value of quantity to zero if  it is not there in cart
   let cartItem = cart.find((item) => item.productId === id);
+
   let quantity = cartItem ? cartItem.quantity : 0;
   // let quantity = cart[id] || 0;
 
@@ -107,11 +108,24 @@ export default function ProductDetail() {
           <div className="mt-4 flex flex-col sm:flex-row justify-between items-center w-full gap-4">
             {/* button for adding item to the cart */}
             <button
-              onClick={() => {
-                // updating cart in the redux store
-                dispatch(addToCartAsync(id));
-                // toast message showing item added to the cart
-                toast("Item added to cart");
+              onClick={async () => {
+                try {
+                  const response = await addToCartAPI(id);
+
+                  // Extract the item that was just added
+                  const item = response.data.items.find(
+                    (item) => item.productId === id
+                  );
+
+                  if (item) {
+                    dispatch(addToCart(item));
+                    toast.success("Item added to cart");
+                  } else {
+                    console.error("Item not found in response:", data);
+                  }
+                } catch (err) {
+                  console.error("Failed to add to cart:", err);
+                }
               }}
               className="bg-[#202020] hover:bg-[#000f9f] px-4 py-2 text-white transition duration-300 w-full sm:w-auto"
             >
@@ -124,16 +138,22 @@ export default function ProductDetail() {
                 // button disabled when the cart is empty
                 disabled={quantity === 0}
                 className="p-1 rounded-full bg-amber-500 hover:bg-amber-400 disabled:opacity-40"
-                // onClick={() => {
-                //   // updating cart in the redux store
-                //   dispatch(removeFromCartAsync(cartItem._id));
-                //   // toast message showing item removed from the cart
-                //   toast("Item removed from cart");
-                // }}
-                onClick={() => {
-                  if (cartItem?._id) {
-                    dispatch(removeFromCartAsync(cartItem._id));
-                    toast("Item removed from cart");
+                onClick={async () => {
+                  try {
+                    // Pass the productId (id from useParams), not cartItem._id
+                    const response = await removeFromCartAPI(id);
+
+                    // Check for the correct response structure
+                    if (response.message === "Cart updated") {
+                      // Dispatch with productId, not cartItem._id
+                      dispatch(removeFromCart(id));
+                      toast.success("Item removed from cart");
+                    } else {
+                      toast.error("Failed to remove item");
+                    }
+                  } catch (err) {
+                    console.error("Error removing from cart:", err);
+                    toast.error("Error occurred");
                   }
                 }}
               >
@@ -141,11 +161,24 @@ export default function ProductDetail() {
               </button>
               <span>{quantity}</span>
               <button
-                onClick={() => {
-                  // updating cart in the redux store
-                  dispatch(addToCartAsync(id));
-                  // toast message showing item added to the cart
-                  toast("Item added to cart");
+                onClick={async () => {
+                  try {
+                    const response = await addToCartAPI(id);
+
+                    // Extract the item that was just added
+                    const item = response.data.items.find(
+                      (item) => item.productId === id
+                    );
+
+                    if (item) {
+                      dispatch(addToCart(item));
+                      toast.success("Item added to cart");
+                    } else {
+                      console.error("Item not found in response:", data);
+                    }
+                  } catch (err) {
+                    console.error("Failed to add to cart:", err);
+                  }
                 }}
                 className="p-1 rounded-full bg-amber-500 hover:bg-amber-400"
               >

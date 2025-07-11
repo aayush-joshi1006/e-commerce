@@ -1,55 +1,86 @@
 // import express from "express";
-// import mongoose from "mongoose";
+// import dotenv from "dotenv";
+// import connectDB from "./config/db.js";
 // import productRoute from "./Routes/products.routes.js";
 // import cartRoute from "./Routes/cart.routes.js";
+// import authRouter from "./Routes/auth.routes.js";
+// import cors from "cors";
+// import cookieParser from "cookie-parser";
+
+// dotenv.config();
+// connectDB();
 
 // const app = express();
-
-// const PORT = 4040;
+// ;
+// app.use(cookieParser());
+// app.use(
+//   cors({
+//     origin: "http://localhost:5173",
+//     credentials: true,
+//   })
+// );
 
 // app.use(express.json());
 
-// mongoose.connect("mongodb://localhost:27017/shoppyglobe");
+// app.options("/", cors());
+// app.use("/products", productRoute);
+// app.use("/auth", authRouter);
+// app.use("/cart", cartRoute);
 
-// const db = mongoose.connection;
-
-// db.on("connected", () => {
-//   console.log("Database connection successfull");
-// });
-
-// db.on("error", (err) => {
-//   console.log("Error while connecting to the database ", err);
-// });
-
-// db.on("disconnected", () => {
-//   console.log("Database disconnected");
-// });
-
-// app.listen(PORT, () => {
-//   console.log("Server running in port ", PORT);
-// });
-
-// app.use("/api/products", productRoute);
-// app.use("/api/cart", cartRoute);
+// const PORT = process.env.PORT || 5000;
+// app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
 
 import express from "express";
+import cors from "cors";
 import dotenv from "dotenv";
+import cookieParser from "cookie-parser";
 import connectDB from "./config/db.js";
 import productRoute from "./Routes/products.routes.js";
 import cartRoute from "./Routes/cart.routes.js";
 import authRouter from "./Routes/auth.routes.js";
-import cors from "cors";
 
 dotenv.config();
 connectDB();
 
 const app = express();
+const PORT = process.env.PORT || 8080;
+
+// ✅ CORS middleware with full config
+app.use(
+  cors({
+    origin: "http://localhost:5173",
+    methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
+    allowedHeaders: ["Content-Type", "Authorization"],
+    credentials: true,
+  })
+);
+
+// ✅ Manual preflight middleware for extra safety
+app.use((req, res, next) => {
+  res.header("Access-Control-Allow-Origin", "http://localhost:5173");
+  res.header("Access-Control-Allow-Credentials", "true");
+  res.header("Access-Control-Allow-Headers", "Content-Type, Authorization");
+  res.header(
+    "Access-Control-Allow-Methods",
+    "GET, POST, PUT, PATCH, DELETE, OPTIONS"
+  );
+
+  if (req.method === "OPTIONS") {
+    return res.sendStatus(204); // Preflight response
+  }
+
+  next();
+});
+
+app.use(cookieParser());
 app.use(express.json());
-app.use(cors());
 
+// ✅ Routes
 app.use("/products", productRoute);
-app.use("/auth", authRouter);
 app.use("/cart", cartRoute);
+app.use("/auth", authRouter);
 
-const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+// ✅ Start server
+app.listen(PORT, () => {
+  console.log(`🚀 Server running at http://localhost:${PORT}`);
+});

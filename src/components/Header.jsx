@@ -17,8 +17,6 @@ export default function Header() {
   // getting current user
   const user = useSelector((store) => store.user);
 
-  console.log(user);
-
   // extracting the state of darkmode and set method for switching dark mode from ThemeContext
   const { darkMode, setDarkMode } = useContext(ThemeContext);
 
