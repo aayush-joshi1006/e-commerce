@@ -1,35 +1,3 @@
-// import express from "express";
-// import dotenv from "dotenv";
-// import connectDB from "./config/db.js";
-// import productRoute from "./Routes/products.routes.js";
-// import cartRoute from "./Routes/cart.routes.js";
-// import authRouter from "./Routes/auth.routes.js";
-// import cors from "cors";
-// import cookieParser from "cookie-parser";
-
-// dotenv.config();
-// connectDB();
-
-// const app = express();
-// ;
-// app.use(cookieParser());
-// app.use(
-//   cors({
-//     origin: "http://localhost:5173",
-//     credentials: true,
-//   })
-// );
-
-// app.use(express.json());
-
-// app.options("/", cors());
-// app.use("/products", productRoute);
-// app.use("/auth", authRouter);
-// app.use("/cart", cartRoute);
-
-// const PORT = process.env.PORT || 5000;
-// app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
-
 import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";

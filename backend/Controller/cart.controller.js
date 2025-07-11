@@ -3,7 +3,9 @@ import cartModel from "../Model/cart.model.js";
 export async function getCartItems(req, res) {
   try {
     const userId = req.user._id;
-    const cart = await cartModel.find({ userId }).populate("items.productId");
+    const cart = await cartModel
+      .findOne({ userId })
+      .populate("items.productId");
     if (!cart) {
       return res.status(200).json({ items: [] }); // empty cart fallback
     }
@@ -155,5 +157,33 @@ export async function updateQuantity(req, res) {
       message: "Failed to update quantity",
       error: error.message,
     });
+  }
+}
+
+export async function clearCart(req, res) {
+ 
+
+  const userId = req.user?._id;
+ 
+  if (!userId) {
+    return res.status(400).json({ message: "User ID is missing" });
+  }
+
+  try {
+    const updatedCart = await cartModel.findOneAndUpdate(
+      { userId },
+      { $set: { items: [] } },
+      { new: true }
+    );
+
+    if (!updatedCart) {
+      return res.status(404).json({ message: "Cart not found" });
+    }
+
+    return res.status(200).json({ message: "Cart cleared", cart: updatedCart });
+  } catch (error) {
+    return res
+      .status(500)
+      .json({ message: "Failed to clear cart", error: error.message });
   }
 }

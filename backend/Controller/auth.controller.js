@@ -79,3 +79,21 @@ export const loginUser = async (req, res) => {
       .json({ message: "Login failed", error: error.message });
   }
 };
+
+export const currentUser = async (req, res) => {
+  if (!req.user) {
+    return res.status(200).json({ user: null });
+  }
+
+  // If logged in, return the user object
+  return res.status(200).json({ user: req.user });
+};
+
+export const logoutUser = async (req, res) => {
+  res.clearCookie("token", {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === "production",
+    sameSite: "strict",
+  });
+  return res.status(200).json({ message: "Logged out successfully" });
+};

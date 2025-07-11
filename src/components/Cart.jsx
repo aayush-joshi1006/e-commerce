@@ -14,20 +14,23 @@ export default function Cart() {
 
   // getting all the products in cart with there quantity
   // conveting object to array for easy manupulation
-  const cartProducts = Object.entries(cartItems).reduce(
-    (acc, [id, quantity]) => {
-      //  matching cart item id wih the product item in products list
-      let item = products.find((product) => product.id === Number(id));
-      // if item exists open the object and insert quantity to it
-      if (item) {
-        // push the modified item to the array
-        acc.push({ ...item, quantity });
-      }
-      // returning the modified array of all items in cart with there quantity
-      return acc;
-    },
-    []
-  );
+
+  const cartProducts = cartItems.map((item) => {
+    return {
+      product: products.find((product) => {
+        
+
+        return product._id === item.productId;
+      }),
+      quantity: item.quantity,
+    };
+  });
+
+
+
+  const cartTotal = cartProducts
+    .reduce((acc, cur) => acc + cur.product.price * cur.quantity, 0)
+    .toFixed(2);
 
   return (
     <>
@@ -42,7 +45,7 @@ export default function Cart() {
           <span>Back to Store</span>
         </Link>
         {/* check if cart is empty and show coresponding message in case it is empty */}
-        {cartProducts.length <= 0 ? (
+        {cartItems.length <= 0 ? (
           // if the cart is empty show this div tag
           <>
             <div className="text-red-700 dark:text-red-400 font-bold text-lg text-center px-4">
@@ -61,20 +64,15 @@ export default function Cart() {
           <>
             <div className="mt-10 w-full max-w-4xl">
               {/* mapping in the cart items list */}
-              {cartProducts.map((product) => (
+              {cartProducts.map((curProduct) => (
                 // for showing indivisual Cart item with quantity
-                <CartItem key={product.id} product={product} />
+                <CartItem key={curProduct.product._id} product={curProduct} />
               ))}
             </div>
             {/* section for toal cost and move to checkout page */}
             <div className="flex justify-evenly w-full max-w-4xl items-center p-4 border-t border-gray-300 dark:border-gray-700 mt-6">
               {/* Calculating total cost of the items */}
-              <span className="text-xl font-bold">
-                Total: $
-                {cartProducts
-                  .reduce((acc, cur) => acc + cur.price * cur.quantity, 0)
-                  .toFixed(2)}
-              </span>
+              <span className="text-xl font-bold">Total: {cartTotal}</span>
               {/* Button for redirecting to the checkout page */}
               <button
                 className="bg-gray-800 dark:bg-blue-700 hover:bg-blue-900 dark:hover:bg-blue-800 text-white px-5 py-2 text-xl transition duration-300"

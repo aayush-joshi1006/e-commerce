@@ -1,15 +1,43 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 import { addToCart } from "../utlis/cartSlice";
+import { addToCartAPI } from "../utlis/cartAPI";
 
 import React from "react";
 
 import { toast } from "react-toastify";
+import PrivateRoute from "./PrivateRoute";
 
 function ProductItem({ product }) {
+  const user = useSelector((state) => state.user.user);
   const dispatch = useDispatch();
+  const navigate= useNavigate()
+
+  const handleAddToCart = async () => {
+    if (!user) {
+      navigate("/login");
+      return;
+    }
+    try {
+      const response = await addToCartAPI(product._id);
+
+      // Extract the item that was just added
+      const item = response.data.items.find(
+        (item) => item.productId === product._id
+      );
+
+      if (item) {
+        dispatch(addToCart(item));
+        toast.success("Item added to cart");
+      } else {
+        console.error("Item not found in response:", data);
+      }
+    } catch (err) {
+      console.error("Failed to add to cart:", err);
+    }
+  };
 
   return (
     // Component for each item
@@ -42,13 +70,9 @@ function ProductItem({ product }) {
           View details
         </Link>
         {/* button to add item to the cart */}
+
         <button
-          onClick={() => {
-            // updating cart in the redux
-            dispatch(addToCart(product.id));
-            // giving message that product has been added to the cart
-            toast("Item added to cart");
-          }}
+          onClick={handleAddToCart}
           className="bg-[#202020] hover:bg-[#000f9f] px-3 py-2 text-white transition duration-300 text-center w-full sm:w-auto"
         >
           Add to Cart

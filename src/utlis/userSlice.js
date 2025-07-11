@@ -1,5 +1,31 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 
+export const getCurrentUser = createAsyncThunk(
+  "user/getCurrentUser",
+  async (_, thunkAPI) => {
+    try {
+      const res = await fetch("http://localhost:8080/auth/", {
+        method: "GET",
+        credentials: "include",
+      });
+
+      if (res.status === 401) {
+        return thunkAPI.rejectWithValue(null); // User not logged in
+      }
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        return thunkAPI.rejectWithValue(data.message || "Unable to fetch user");
+      }
+
+      return data;
+    } catch (error) {
+      return thunkAPI.rejectWithValue("Network Error");
+    }
+  }
+);
+
 export const registerUser = createAsyncThunk(
   "user/registerUser",
   async ({ name, email, password }, thunkAPI) => {
@@ -91,6 +117,19 @@ const userSlice = createSlice({
         state.token = action.payload.token;
       })
       .addCase(registerUser.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+      })
+      .addCase(getCurrentUser.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(getCurrentUser.fulfilled, (state, action) => {
+        state.loading = false;
+        state.user = action.payload.user;
+        state.token = action.payload.token; // optional if using JWT
+      })
+      .addCase(getCurrentUser.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
       });

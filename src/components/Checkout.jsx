@@ -7,6 +7,7 @@ import { clearCart } from "../utlis/cartSlice";
 import { IoMdArrowBack } from "react-icons/io";
 
 import { toast } from "react-toastify";
+import { clearCartAPI } from "../utlis/cartAPI";
 
 export default function Checkout() {
   // getting list of all products from redux store
@@ -20,20 +21,16 @@ export default function Checkout() {
 
   // getting all the items from the cart and adding there qunatities to the item
   // converting object to array for easier access of all items
-  const cartProducts = Object.entries(cartItems).reduce(
-    (acc, [id, quantity]) => {
-      // getting item details which are present in the cart
-      let item = products.find((product) => product.id == parseInt(id));
-      // adding the quantity of the item to the item object
-      if (item) {
-        // pushing to a new array of items
-        acc.push({ ...item, quantity });
-      }
-      // returning the collection of items in cart with their quantity
-      return acc;
-    },
-    []
-  );
+  const cartProducts = cartItems.map((item) => {
+    return {
+      product: products.find((product) => product._id === item.productId),
+      quantity: item.quantity,
+    };
+  });
+
+  const cartTotal = cartProducts
+    .reduce((acc, cur) => acc + cur.product.price * cur.quantity, 0)
+    .toFixed(2);
 
   return (
     <>
@@ -50,29 +47,32 @@ export default function Checkout() {
         {/* Componet showing all the items in the cart with there details */}
         <div className="w-full flex flex-col items-center mt-10">
           {/* mapping to all cart items */}
-          {cartProducts.map((product) => (
+          {cartProducts.map((curProduct) => (
             // indivisual item in the cart
             <div
-              key={product.id}
+              key={curProduct.product._id}
               className="flex flex-col sm:flex-row justify-evenly items-center w-full sm:w-[40vw] p-3 m-2 bg-[#f9f9f9] dark:bg-gray-800 gap-4 transition-colors duration-300"
             >
               {/* product image */}
               <div className="flex justify-center">
                 <img
-                  src={product.thumbnail}
+                  src={curProduct.product.thumbnail}
                   className="w-40 sm:w-44 rounded"
-                  alt={product.title}
+                  alt={curProduct.product.title}
                   onError={(e) => (e.target.src = "/src/assets/fallback.png")}
                 />
               </div>
               {/* product detaisl */}
               <div className="flex flex-col items-center sm:items-end text-center sm:text-right w-full sm:w-[20vw] gap-2 text-gray-900 dark:text-gray-100">
-                <p className="text-lg font-bold">{product.title}</p>
+                <p className="text-lg font-bold">{curProduct.product.title}</p>
                 <p className="font-thin italic">
-                  {product.quantity} × ${product.price}
+                  {curProduct.quantity} × ${curProduct.product.price}
                 </p>
                 <div className="h-0.5 w-[80%] bg-gray-300 dark:bg-gray-600 rounded" />
-                <p>Total: ${(product.quantity * product.price).toFixed(2)}</p>
+                <p>
+                  Total: $
+                  {(curProduct.quantity * curProduct.product.price).toFixed(2)}
+                </p>
               </div>
             </div>
           ))}
@@ -81,23 +81,30 @@ export default function Checkout() {
         <div className="flex flex-col sm:flex-row justify-between items-center p-4 w-full sm:w-[40vw] gap-4">
           {/* componet showung total amount  */}
           <span className="text-xl font-bold text-gray-900 dark:text-gray-100">
-            Total: $
-            {cartProducts
-              .reduce((acc, cur) => acc + cur.price * cur.quantity, 0)
-              .toFixed(2)}
+            Total: ${cartTotal}
           </span>
           {/* button for payng the amount */}
           <button
             className="bg-gray-800 dark:bg-blue-700 hover:bg-blue-900 dark:hover:bg-blue-800 text-white px-5 py-2 text-xl transition duration-300"
             onClick={() => {
-              // calling toast function so that payment message is shown
+              // Show toast notification
               toast("Payment successful! Redirecting to store...");
-              // setTimeout for insuatinig the time taken for payment
-              setTimeout(() => {
-                // navigating back to the items store page after complition of the payment
+
+              // Simulate delay for payment processing
+              setTimeout(async () => {
+                try {
+                  // Clear cart in DB
+                  await clearCartAPI();
+
+                  // Clear cart in Redux store
+                  dispatch(clearCart());
+                } catch (error) {
+                  console.error("Failed to clear cart:", error.message);
+                  // Optional: show an error toast or fallback
+                }
+
+                // Navigate after cart has been cleared
                 navigate("/store");
-                // emptying the cart after payment is successful
-                dispatch(clearCart());
               }, 2000);
             }}
           >

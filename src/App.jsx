@@ -7,11 +7,14 @@ import useFetch from "./utlis/useFetch";
 
 import { Outlet } from "react-router-dom";
 
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 import { useEffect, Suspense } from "react";
 
 import { ToastContainer } from "react-toastify";
+import { getCartAPI } from "./utlis/cartAPI";
+import { setCart } from "./utlis/cartSlice";
+import { getCurrentUser } from "./utlis/userSlice";
 
 function App() {
   const url = "http://localhost:8080/products";
@@ -19,6 +22,13 @@ function App() {
   const { data, loading, error } = useFetch(url);
   // initialzing dispatch function for using function inside redux store
   const dispatch = useDispatch();
+  const cart = useSelector((store) => store.cart);
+
+  const { loading: lodingUser, user } = useSelector((store) => store.user);
+
+  useEffect(() => {
+    dispatch(getCurrentUser());
+  }, [dispatch]);
 
   useEffect(() => {
     if (Array.isArray(data)) {
@@ -26,6 +36,31 @@ function App() {
     }
   }, [data, dispatch]);
 
+  useEffect(() => {
+    const fetchCart = async () => {
+      try {
+        const cartData = await getCartAPI();
+        if (Array.isArray(cartData)) {
+          const minimalCart = cartData.map((item) => ({
+            _id: item._id,
+            productId: item.productId._id,
+            quantity: item.quantity,
+          }));
+          dispatch(setCart(minimalCart));
+        }
+      } catch (err) {
+        console.error("Failed to fetch cart:", err.message);
+      }
+    };
+
+    if (!lodingUser) {
+      if (user && user._id) {
+        fetchCart();
+      } else {
+        dispatch(setCart([])); // ✅ Clear cart only after user is known to be absent
+      }
+    }
+  }, [user, lodingUser, dispatch]);
   // in case data is still loading
   if (loading) return <Loading />;
   // in case error occurs

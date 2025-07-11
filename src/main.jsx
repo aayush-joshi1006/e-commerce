@@ -23,6 +23,7 @@ import {
 } from "./utlis/route.js";
 
 import ThemeProvider from "./context/ThemeContext.jsx";
+import PrivateRoute from "./components/PrivateRoute.jsx";
 
 // router method
 const router = createBrowserRouter([
@@ -53,11 +54,19 @@ const router = createBrowserRouter([
       },
       {
         path: "/cart",
-        element: <Cart />,
+        element: (
+          <PrivateRoute>
+            <Cart />
+          </PrivateRoute>
+        ),
       },
       {
         path: "/checkout",
-        element: <Checkout />,
+        element: (
+          <PrivateRoute>
+            <Checkout />
+          </PrivateRoute>
+        ),
       },
     ],
   },

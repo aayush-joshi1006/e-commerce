@@ -1,24 +1,47 @@
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
-import { useContext } from "react";
+import { useContext, useEffect, useState } from "react";
 import { ThemeContext } from "../context/ThemeContext";
 
 import { TiShoppingCart } from "react-icons/ti";
 import { FaMoon, FaSun } from "react-icons/fa6";
+import { logout } from "../utlis/userSlice";
+import { clearCart } from "../utlis/cartSlice";
 
 export default function Header() {
   // getting cart items from redux store
   const cart = useSelector((store) => store.cart);
   // getting number of items in the cart
-  let cartTotal = Object.values(cart).reduce((sum, qty) => sum + qty, 0);
+
+  let cartTotal = cart.reduce((sum, item) => sum + item.quantity, 0);
 
   // getting current user
-  const user = useSelector((store) => store.user);
+  const user = useSelector((store) => store.user.user);
+
+  const username = user?.email?.split("@")[0];
 
   // extracting the state of darkmode and set method for switching dark mode from ThemeContext
   const { darkMode, setDarkMode } = useContext(ThemeContext);
+
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  const handleLogout = async () => {
+    try {
+      await fetch("http://localhost:8080/auth/logout", {
+        method: "POST",
+        credentials: "include", // because cookie-based
+      });
+
+      dispatch(logout()); // Clear user from Redux
+      // dispatch(clearCart());
+      navigate("/login"); // Redirect to login page
+    } catch (err) {
+      console.error("Logout failed:", err);
+    }
+  };
 
   return (
     <header>
@@ -57,18 +80,15 @@ export default function Header() {
         {/* Right - Cart + Toggle */}
         {/* Cart component */}
         <div className="flex justify-center items-center gap-2 mx-3">
-          {user.token ? (
-            `welcone ${user.user.email.split("@")[0]}`
+          {username ? (
+            `Welcome ${username}`
           ) : (
             <Link
               to="/login"
               className="bg-[#202020] hover:bg-[#000f9f] px-3 py-2 text-white transition duration-300
-              dark:bg-gray-700 dark:hover:bg-blue-700
-            "
+      dark:bg-gray-700 dark:hover:bg-blue-700"
             >
-              {user.token
-                ? `welcone ${user.user.email.split("@")[0]}`
-                : "LogIn"}
+              Login
             </Link>
           )}
 
@@ -89,6 +109,13 @@ export default function Header() {
             className="p-2 rounded-full bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 transition duration-300"
           >
             {darkMode ? <FaSun /> : <FaMoon />}
+          </button>
+          <button
+            onClick={handleLogout}
+            disabled={!user}
+            className="bg-red-500 text-white px-4 py-2 disabled:bg-gray-600"
+          >
+            Logout
           </button>
         </div>
       </nav>

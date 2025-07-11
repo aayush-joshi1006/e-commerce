@@ -1,5 +1,6 @@
 import {
   addToCart,
+  clearCart,
   deleteCartItem,
   getCartItems,
   updateCart,
@@ -22,6 +23,7 @@ cartRoute.put("/:id", protect, updateQuantity);
 //   },
 //   updateQuantity
 // );
-cartRoute.delete("/:id", protect, deleteCartItem);
+// cartRoute.delete("/:id", protect, deleteCartItem);
+cartRoute.delete("/clear", protect, clearCart);
 
 export default cartRoute;
