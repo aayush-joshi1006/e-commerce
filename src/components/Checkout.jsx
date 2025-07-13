@@ -20,7 +20,6 @@ export default function Checkout() {
   const navigate = useNavigate();
 
   // getting all the items from the cart and adding there qunatities to the item
-  // converting object to array for easier access of all items
   const cartProducts = cartItems.map((item) => {
     return {
       product: products.find((product) => product._id === item.productId),
@@ -28,6 +27,7 @@ export default function Checkout() {
     };
   });
 
+  // calculating total cost of items in the cart
   const cartTotal = cartProducts
     .reduce((acc, cur) => acc + cur.product.price * cur.quantity, 0)
     .toFixed(2);
@@ -89,20 +89,17 @@ export default function Checkout() {
             onClick={() => {
               // Show toast notification
               toast("Payment successful! Redirecting to store...");
-
               // Simulate delay for payment processing
               setTimeout(async () => {
                 try {
                   // Clear cart in DB
                   await clearCartAPI();
-
                   // Clear cart in Redux store
                   dispatch(clearCart());
                 } catch (error) {
                   console.error("Failed to clear cart:", error.message);
                   // Optional: show an error toast or fallback
                 }
-
                 // Navigate after cart has been cleared
                 navigate("/store");
               }, 2000);

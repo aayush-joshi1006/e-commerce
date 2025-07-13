@@ -13,21 +13,16 @@ export default function Cart() {
   let navigate = useNavigate();
 
   // getting all the products in cart with there quantity
-  // conveting object to array for easy manupulation
-
   const cartProducts = cartItems.map((item) => {
     return {
       product: products.find((product) => {
-        
-
         return product._id === item.productId;
       }),
       quantity: item.quantity,
     };
   });
 
-
-
+  // claculating total cost of items in the cart
   const cartTotal = cartProducts
     .reduce((acc, cur) => acc + cur.product.price * cur.quantity, 0)
     .toFixed(2);

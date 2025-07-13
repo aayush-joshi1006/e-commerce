@@ -85,6 +85,7 @@ const userSlice = createSlice({
     token: null,
     loading: false,
     error: null,
+    checked: false,
   },
   reducers: {
     logout(state) {
@@ -128,10 +129,12 @@ const userSlice = createSlice({
         state.loading = false;
         state.user = action.payload.user;
         state.token = action.payload.token; // optional if using JWT
+        state.checked = true;
       })
       .addCase(getCurrentUser.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
+        state.checked = true;
       });
   },
 });

@@ -1,11 +1,14 @@
 import mongoose from "mongoose";
 
+// designing cart schema
 const cartSchema = mongoose.Schema({
+  //  id of the user to whom cart is assosiated
   userId: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "users",
     required: true,
   },
+  // items in the cart
   items: [
     {
       productId: {
@@ -21,6 +24,7 @@ const cartSchema = mongoose.Schema({
   ],
 });
 
+// creating cartModel in the database
 const cartModel = mongoose.model("cart", cartSchema);
 
 export default cartModel;

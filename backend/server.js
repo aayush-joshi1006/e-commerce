@@ -7,13 +7,17 @@ import productRoute from "./Routes/products.routes.js";
 import cartRoute from "./Routes/cart.routes.js";
 import authRouter from "./Routes/auth.routes.js";
 
+// getting environment variables
 dotenv.config();
+// connection to the database
 connectDB();
 
+// iinitializing the server
 const app = express();
+// getting port from .env if not avaialble set it to 8080
 const PORT = process.env.PORT || 8080;
 
-// ✅ CORS middleware with full config
+// CORS middleware with full config
 app.use(
   cors({
     origin: "http://localhost:5173",
@@ -23,8 +27,9 @@ app.use(
   })
 );
 
-// ✅ Manual preflight middleware for extra safety
+//  Manual preflight middleware for extra safety
 app.use((req, res, next) => {
+  // response headers
   res.header("Access-Control-Allow-Origin", "http://localhost:5173");
   res.header("Access-Control-Allow-Credentials", "true");
   res.header("Access-Control-Allow-Headers", "Content-Type, Authorization");
@@ -34,21 +39,23 @@ app.use((req, res, next) => {
   );
 
   if (req.method === "OPTIONS") {
-    return res.sendStatus(204); // Preflight response
+    // Preflight response
+    return res.sendStatus(204);
   }
-
   next();
 });
 
+// initializing cookie parser for accessing cookie
 app.use(cookieParser());
+// json middleware so that json format files can be read
 app.use(express.json());
 
-// ✅ Routes
+// Routes
 app.use("/products", productRoute);
 app.use("/cart", cartRoute);
 app.use("/auth", authRouter);
 
-// ✅ Start server
+// Start server
 app.listen(PORT, () => {
-  console.log(`🚀 Server running at http://localhost:${PORT}`);
+  console.log(`Server running at http://localhost:${PORT}`);
 });

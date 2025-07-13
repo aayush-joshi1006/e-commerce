@@ -75,7 +75,7 @@ export default function HomePage() {
           <Link
             to="/store"
             className="bg-[#202020] hover:bg-[#000f9f] px-3 py-2 text-white transition duration-300
-              dark:bg-gray-700 dark:hover:bg-blue-700
+              dark:bg-[#000f9f] dark:hover:bg-blue-700
             "
           >
             Explore More

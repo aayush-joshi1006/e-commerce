@@ -9,21 +9,14 @@ import {
 import express from "express";
 import { protect } from "../middleware/auth.middleware.js";
 
+// creating seperate router for cart methods 
 const cartRoute = express.Router();
 
+// creting paths for diffrent operations with autherization as middleware
 cartRoute.get("/", protect, getCartItems);
 cartRoute.post("/", protect, addToCart);
 cartRoute.put("/:id", protect, updateQuantity);
-// cartRoute.patch(
-//   "/:id",
-//   protect,
-//   (req, res, next) => {
-//     console.log("PATCH /cart/:id called");
-//     next();
-//   },
-//   updateQuantity
-// );
-// cartRoute.delete("/:id", protect, deleteCartItem);
 cartRoute.delete("/clear", protect, clearCart);
+cartRoute.delete("/:id", protect, deleteCartItem);
 
 export default cartRoute;

@@ -65,7 +65,7 @@ function ProductItem({ product }) {
         {/* view details page for that product */}
         <Link
           to={`/product/${product._id}`}
-          className="bg-[#202020] hover:bg-[#000f9f] px-3 py-2 text-white transition duration-300 text-center w-full sm:w-auto"
+          className="bg-black hover:bg-[#000f9f] dark:bg-[#000f9f] dark:hover:bg-blue-700 px-3 py-2 text-white transition duration-300 text-center w-full sm:w-auto"
         >
           View details
         </Link>
@@ -73,7 +73,7 @@ function ProductItem({ product }) {
 
         <button
           onClick={handleAddToCart}
-          className="bg-[#202020] hover:bg-[#000f9f] px-3 py-2 text-white transition duration-300 text-center w-full sm:w-auto"
+          className="bg-black hover:bg-[#000f9f] dark:bg-[#000f9f] dark:hover:bg-blue-700 px-3 py-2 text-white transition duration-300 text-center w-full sm:w-auto"
         >
           Add to Cart
         </button>

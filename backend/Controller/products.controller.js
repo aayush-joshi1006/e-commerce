@@ -1,65 +1,11 @@
 import productModel from "../Model/products.model.js";
 
-// export function getProducts(req, res) {
-//   productModel
-//     .find()
-//     .then((data) => {
-//       return res.status(200).json(data);
-//     })
-//     .catch((err) => {
-//       return res
-//         .status(500)
-//         .json({ message: "Internal Server Error", error: err.message });
-//     });
-// }
-
-// export function getSingleProduct(req, res) {
-//   let currentId = req.params.id;
-//   productModel
-//     .findById(currentId)
-//     .then((data) => {
-//       if (!data) {
-//         return res.status(404).json({ message: "Product Not Found" });
-//       }
-//       return res.status(200).json(data);
-//     })
-//     .catch((err) => {
-//       return res.status(500).json({
-//         message: "Internal Server Error",
-//         error: err.message,
-//       });
-//     });
-// }
-
-// export function postProducts(req, res) {
-//   const { title, description, price, rating, tags, thumbnail, stock } =
-//     req.body;
-
-//   const newProduct = new productModel({
-//     title,
-//     description,
-//     price,
-//     rating,
-//     tags,
-//     thumbnail,
-//     stock,
-//   });
-
-//   newProduct
-//     .save()
-//     .then((product) => {
-//       return res.status(201).json(product);
-//     })
-//     .catch((err) => {
-//       return res
-//         .status(500)
-//         .json({ message: "Internal Server Error", error: err.message });
-//     });
-// }
-
+// controller for fetching all products from the database
 export async function getProducts(req, res) {
   try {
+    // getting all products from the database
     const data = await productModel.find();
+    // returning products as a response
     res.status(200).json(data);
   } catch (error) {
     res
@@ -68,10 +14,14 @@ export async function getProducts(req, res) {
   }
 }
 
+// controller for getting a single product
 export async function getSingleProduct(req, res) {
   try {
+    // getting product from database using product id from the url
     const data = await productModel.findById(req.params.id);
+    // in case product is not found
     if (!data) return res.status(404).json({ message: "Product Not Found" });
+    // returning current product
     res.status(200).json(data);
   } catch (error) {
     res
@@ -80,13 +30,17 @@ export async function getSingleProduct(req, res) {
   }
 }
 
+// posting a product to the database
 export async function postProducts(req, res) {
   try {
+    // getting product's details from the request body
     const { title, description, price, rating, tags, thumbnail, stock } =
       req.body;
+    // in case main data is missing return the message
     if (!title || !description || !price || !stock) {
       return res.status(400).json({ message: "Missing required fields" });
     }
+    // creating a new product in the database
     const newProduct = new productModel({
       title,
       description,
@@ -96,7 +50,9 @@ export async function postProducts(req, res) {
       thumbnail,
       stock,
     });
+    // save the changes to the database
     const saved = await newProduct.save();
+    // response with the saved product
     res.status(201).json(saved);
   } catch (error) {
     res

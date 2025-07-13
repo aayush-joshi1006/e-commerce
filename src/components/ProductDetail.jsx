@@ -10,7 +10,7 @@ import { addToCartAPI, removeFromCartAPI } from "../utlis/cartAPI";
 
 import { toast } from "react-toastify";
 
-import { useMemo, useEffect } from "react";
+import { useMemo } from "react";
 
 export default function ProductDetail() {
   // getting id of the utem from url
@@ -21,19 +21,20 @@ export default function ProductDetail() {
   let cart = useSelector((store) => store.cart);
   // innitializing dispatch function for using functions from redux store
   const dispatch = useDispatch();
+  // getting current user
   const user = useSelector((state) => state.user.user);
-
+  // navigation function for routing between pages
   const navigate = useNavigate();
 
-  // finding the current product by matching id from url to hte product list
+  // finding the current product by matching id from url to the product list
   const currentProduct = useMemo(() => {
     return products?.find((product) => product._id === id);
   }, [products, id]);
-  // setting value of quantity to zero if  it is not there in cart
+  // getting current item corresponding to the produuctId
   let cartItem = cart.find((item) => item.productId === id);
 
+  // setting value of quantity to zero if  it is not there in cart
   let quantity = cartItem ? cartItem.quantity : 0;
-  // let quantity = cart[id] || 0;
 
   // giving product not found message in case the id does not matches
   if (!currentProduct) {
@@ -162,7 +163,7 @@ export default function ProductDetail() {
             {/* button for adding item to the cart */}
             <button
               onClick={handleAddToCart}
-              className="bg-[#202020] hover:bg-[#000f9f] px-4 py-2 text-white transition duration-300 w-full sm:w-auto"
+              className="bg-black hover:bg-[#000f9f] dark:bg-[#000f9f] dark:hover:bg-blue-700 px-4 py-2 text-white transition duration-300 w-full sm:w-auto"
             >
               Add to Cart
             </button>

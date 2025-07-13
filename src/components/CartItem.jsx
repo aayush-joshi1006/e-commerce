@@ -9,18 +9,15 @@ import { toast } from "react-toastify";
 
 export default function CartItem({ product }) {
   // getting cart items from the redux store
-
   const cart = useSelector((store) => store.cart);
-  // setting cart item quntity from cart item list else setting to zero if not exists
-  // const quantity = cart[product.id] || 0;
   // initialzing dispatch function for using functions from store
   const dispatch = useDispatch();
 
+  // function for removing items from the cart
   const handleRemoveFromCart = async () => {
     try {
       // Pass the productId (id from useParams), not cartItem._id
       const response = await removeFromCartAPI(product.product._id);
-
       // Check for the correct response structure
       if (response.message === "Cart updated") {
         // Dispatch with productId, not cartItem._id
@@ -40,15 +37,17 @@ export default function CartItem({ product }) {
     }
   };
 
+  // function for adding item to the cart
   const handleAddToCart = async () => {
     try {
+      // making api call to backend with productID
       const response = await addToCartAPI(product.product._id);
 
       // Extract the item that was just added
       const item = response.data.items.find(
         (item) => item.productId === product.product._id
       );
-
+      // dispatching modification to the redux store
       if (item) {
         dispatch(addToCart(item));
         toast.success("Item added to cart");

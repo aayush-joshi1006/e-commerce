@@ -18,16 +18,24 @@ import { getCurrentUser } from "./utlis/userSlice";
 
 function App() {
   const url = "http://localhost:8080/products";
+  // const url = "https://dummyjson.com/products";
+
   // getting data,loading.error with using custom hook
   const { data, loading, error } = useFetch(url);
   // initialzing dispatch function for using function inside redux store
   const dispatch = useDispatch();
   const cart = useSelector((store) => store.cart);
 
-  const { loading: lodingUser, user } = useSelector((store) => store.user);
+  const {
+    loading: lodingUser,
+    user,
+    checked,
+  } = useSelector((store) => store.user);
 
   useEffect(() => {
-    dispatch(getCurrentUser());
+    if (!checked) {
+      dispatch(getCurrentUser());
+    }
   }, [dispatch]);
 
   useEffect(() => {
