@@ -1,4 +1,4 @@
-const BASE_URL = "http://localhost:8080";
+const BASE_URL = "https://e-commerce-vkhx.onrender.com";
 
 export const addToCartAPI = async (productId) => {
   const res = await fetch(`${BASE_URL}/cart`, {
