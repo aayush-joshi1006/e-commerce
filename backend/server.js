@@ -27,23 +27,46 @@ app.use(
   })
 );
 
+const allowedOrigins = [
+  "http://localhost:5173", // for local dev
+  "https://e-commerce-tau-ten-85.vercel.app", // deployed frontend
+];
 //  Manual preflight middleware for extra safety
-app.use((req, res, next) => {
-  // response headers
-  res.header("Access-Control-Allow-Origin", "http://localhost:5173");
-  res.header("Access-Control-Allow-Credentials", "true");
-  res.header("Access-Control-Allow-Headers", "Content-Type, Authorization");
-  res.header(
-    "Access-Control-Allow-Methods",
-    "GET, POST, PUT, PATCH, DELETE, OPTIONS"
-  );
+// app.use((req, res, next) => {
 
-  if (req.method === "OPTIONS") {
-    // Preflight response
-    return res.sendStatus(204);
-  }
-  next();
-});
+//   // response headers
+//   res.header(
+//     "Access-Control-Allow-Origin",
+//     "https://e-commerce-tau-ten-85.vercel.app/"
+//   );
+//   res.header("Access-Control-Allow-Credentials", "true");
+//   res.header("Access-Control-Allow-Headers", "Content-Type, Authorization");
+//   res.header(
+//     "Access-Control-Allow-Methods",
+//     "GET, POST, PUT, PATCH, DELETE, OPTIONS"
+//   );
+
+//   if (req.method === "OPTIONS") {
+//     // Preflight response
+//     return res.sendStatus(204);
+//   }
+//   next();
+// });
+
+app.use(
+  cors({
+    origin: (origin, callback) => {
+      if (!origin || allowedOrigins.includes(origin)) {
+        callback(null, true);
+      } else {
+        callback(new Error("Not allowed by CORS"));
+      }
+    },
+    methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
+    allowedHeaders: ["Content-Type", "Authorization"],
+    credentials: true,
+  })
+);
 
 // initializing cookie parser for accessing cookie
 app.use(cookieParser());
