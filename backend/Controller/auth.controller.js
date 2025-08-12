@@ -31,8 +31,8 @@ export const registerUser = async (req, res) => {
     // Setting token in cookie
     res.cookie("token", token, {
       httpOnly: true,
-      sameSite: "Lax",
-      secure: false,
+      sameSite: "None",
+      secure: true,
       maxAge: 7 * 24 * 60 * 60 * 1000,
     });
 
@@ -76,8 +76,8 @@ export const loginUser = async (req, res) => {
     // storing token in cookie
     res.cookie("token", token, {
       httpOnly: true,
-      sameSite: "Lax", // Or 'None' if you're testing on cross-origin + HTTPS
-      secure: false, // Set to true in production with HTTPS
+      sameSite: "None", // Or 'None' if you're testing on cross-origin + HTTPS
+      secure: true, // Set to true in production with HTTPS
       maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
     });
 
