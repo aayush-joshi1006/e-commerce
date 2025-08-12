@@ -17,7 +17,7 @@ import { setCart } from "./utlis/cartSlice";
 import { getCurrentUser } from "./utlis/userSlice";
 
 function App() {
-  const url = "http://localhost:8080/products";
+  const url = "https://e-commerce-vkhx.onrender.com/products";
   // const url = "https://dummyjson.com/products";
 
   // getting data,loading.error with using custom hook
@@ -119,7 +119,7 @@ export default App;
 //         stock: product.stock,
 //       };
 
-//       const res = await fetch("http://localhost:8080/products", {
+//       const res = await fetch("https://e-commerce-vkhx.onrender.com/products", {
 //         method: "POST",
 //         headers: {
 //           "Content-Type": "application/json",

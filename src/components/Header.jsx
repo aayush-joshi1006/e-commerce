@@ -63,7 +63,7 @@ export default function Header() {
   const handleLogout = async () => {
     try {
       // making request to backend for removal of user session
-      await fetch("http://localhost:8080/auth/logout", {
+      await fetch("https://e-commerce-vkhx.onrender.com/auth/logout", {
         method: "POST",
         // because cookie-based
         credentials: "include",

@@ -4,7 +4,7 @@ export const getCurrentUser = createAsyncThunk(
   "user/getCurrentUser",
   async (_, thunkAPI) => {
     try {
-      const res = await fetch("http://localhost:8080/auth/", {
+      const res = await fetch("https://e-commerce-vkhx.onrender.com/auth/", {
         method: "GET",
         credentials: "include",
       });
@@ -30,14 +30,17 @@ export const registerUser = createAsyncThunk(
   "user/registerUser",
   async ({ name, email, password }, thunkAPI) => {
     try {
-      const res = await fetch("http://localhost:8080/auth/register", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        credentials: "include",
-        body: JSON.stringify({ name, email, password }),
-      });
+      const res = await fetch(
+        "https://e-commerce-vkhx.onrender.com/auth/register",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          credentials: "include",
+          body: JSON.stringify({ name, email, password }),
+        }
+      );
 
       const data = await res.json();
 
@@ -56,14 +59,17 @@ export const loginUser = createAsyncThunk(
   "user/loginUser",
   async ({ email, password }, thunkAPI) => {
     try {
-      const res = await fetch("http://localhost:8080/auth/login", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        credentials: "include",
-        body: JSON.stringify({ email, password }),
-      });
+      const res = await fetch(
+        "https://e-commerce-vkhx.onrender.com/auth/login",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          credentials: "include",
+          body: JSON.stringify({ email, password }),
+        }
+      );
 
       const data = await res.json();
 
