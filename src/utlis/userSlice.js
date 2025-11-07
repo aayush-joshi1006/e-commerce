@@ -2,26 +2,26 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 
 export const getCurrentUser = createAsyncThunk(
   "user/getCurrentUser",
-  async (_, thunkAPI) => {
+  async (_, { rejectWithValue }) => {
     try {
-      const res = await fetch("https://e-commerce-vkhx.onrender.com/auth/", {
+      const res = await fetch(`${import.meta.env.VITE_API_URL}/auth`, {
         method: "GET",
         credentials: "include",
       });
 
       if (res.status === 401) {
-        return thunkAPI.rejectWithValue(null); // User not logged in
+        return { user: null, token: null, anonymous: true }; // User not logged in
       }
 
       const data = await res.json();
 
       if (!res.ok) {
-        return thunkAPI.rejectWithValue(data.message || "Unable to fetch user");
+        return rejectWithValue(data?.message || "Unable to fetch user");
       }
 
       return data;
     } catch (error) {
-      return thunkAPI.rejectWithValue("Network Error");
+      return rejectWithValue("Cannot reach server");
     }
   }
 );
@@ -30,17 +30,14 @@ export const registerUser = createAsyncThunk(
   "user/registerUser",
   async ({ name, email, password }, thunkAPI) => {
     try {
-      const res = await fetch(
-        "https://e-commerce-vkhx.onrender.com/auth/register",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          credentials: "include",
-          body: JSON.stringify({ name, email, password }),
-        }
-      );
+      const res = await fetch(`${import.meta.env.VITE_API_URL}/auth/register`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        credentials: "include",
+        body: JSON.stringify({ name, email, password }),
+      });
 
       const data = await res.json();
 
@@ -59,17 +56,14 @@ export const loginUser = createAsyncThunk(
   "user/loginUser",
   async ({ email, password }, thunkAPI) => {
     try {
-      const res = await fetch(
-        "https://e-commerce-vkhx.onrender.com/auth/login",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          credentials: "include",
-          body: JSON.stringify({ email, password }),
-        }
-      );
+      const res = await fetch(`${import.meta.env.VITE_API_URL}/auth/login`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        credentials: "include",
+        body: JSON.stringify({ email, password }),
+      });
 
       const data = await res.json();
 
@@ -133,13 +127,18 @@ const userSlice = createSlice({
       })
       .addCase(getCurrentUser.fulfilled, (state, action) => {
         state.loading = false;
-        state.user = action.payload.user;
-        state.token = action.payload.token; // optional if using JWT
         state.checked = true;
+        if (!action.payload?.anonymous) {
+          state.user = action.payload.user || null;
+          state.token = action.payload.token || null; // or drop token entirely if using httpOnly cookie
+        } else {
+          state.user = null;
+          state.token = null;
+        }
       })
       .addCase(getCurrentUser.rejected, (state, action) => {
         state.loading = false;
-        state.error = action.payload;
+        state.error = action.payload || "Session check failed";
         state.checked = true;
       });
   },

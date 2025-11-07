@@ -17,11 +17,11 @@ export default function Login() {
   const { loading, error } = useSelector((store) => store.user);
 
   // Submit button function
-  const handleSubmit = async (e) => {
+  const handleSubmit = (e) => {
     // preventing default functionality
     e.preventDefault();
     // sending POST request to backend for autherization
-    const result = await dispatch(loginUser({ email, password }));
+    const result = dispatch(loginUser({ email, password }));
     // if login successful navigate to homepage
     if (loginUser.fulfilled.match(result)) {
       navigate("/");

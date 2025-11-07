@@ -5,7 +5,7 @@ import userModel from "../Model/user.model.js";
 export const protect = async (req, res, next) => {
   // getting token from cookies
   const token = req.cookies.token;
-// in case no token is not present in cookies
+  // in case no token is not present in cookies
   if (!token) {
     return res.status(401).json({ message: "Not authorized, no token" });
   }
@@ -19,4 +19,16 @@ export const protect = async (req, res, next) => {
     // in case authorization fails
     return res.status(401).json({ message: "Not authorized, token failed" });
   }
+};
+
+export const authOptional = async (req, _res, next) => {
+  const token = req.cookies?.token;
+  if (!token) return next();
+  try {
+    const { userId } = jwt.verify(token, process.env.JWT_SECRET);
+    req.user = await userModel.findById(userId).select("-password");
+  } catch (_) {
+    // ignore invalid cookie for /me; still anonymous
+  }
+  next();
 };

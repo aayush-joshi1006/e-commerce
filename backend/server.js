@@ -18,52 +18,28 @@ const app = express();
 const PORT = process.env.PORT || 8080;
 
 // CORS middleware with full config
-app.use(
-  cors({
-    origin: "http://localhost:5173",
-    methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
-    allowedHeaders: ["Content-Type", "Authorization"],
-    credentials: true,
-  })
-);
+// app.use(
+//   cors({
+//     origin: "http://localhost:5173",
+//     methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
+//     allowedHeaders: ["Content-Type", "Authorization"],
+//     credentials: true,
+//   })
+// );
 
 const allowedOrigins = [
   "http://localhost:5173", // for local dev
   "https://e-commerce-tau-ten-85.vercel.app", // deployed frontend
 ];
-//  Manual preflight middleware for extra safety
-// app.use((req, res, next) => {
-
-//   // response headers
-//   res.header(
-//     "Access-Control-Allow-Origin",
-//     "https://e-commerce-tau-ten-85.vercel.app/"
-//   );
-//   res.header("Access-Control-Allow-Credentials", "true");
-//   res.header("Access-Control-Allow-Headers", "Content-Type, Authorization");
-//   res.header(
-//     "Access-Control-Allow-Methods",
-//     "GET, POST, PUT, PATCH, DELETE, OPTIONS"
-//   );
-
-//   if (req.method === "OPTIONS") {
-//     // Preflight response
-//     return res.sendStatus(204);
-//   }
-//   next();
-// });
 
 app.use(
   cors({
-    origin: (origin, callback) => {
-      if (!origin || allowedOrigins.includes(origin)) {
-        callback(null, true);
-      } else {
-        callback(new Error("Not allowed by CORS"));
-      }
+    origin(origin, callback) {
+      // allow same-origin/non-browser requests (e.g. curl, server-to-server)
+      if (!origin) return callback(null, true);
+      if (allowedOrigins.includes(origin)) return callback(null, true);
+      return callback(new Error("Not allowed by CORS"));
     },
-    methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
-    allowedHeaders: ["Content-Type", "Authorization"],
     credentials: true,
   })
 );
@@ -78,6 +54,18 @@ app.use("/products", productRoute);
 app.use("/cart", cartRoute);
 app.use("/auth", authRouter);
 
+// Optional: handle errors so you don't leak "Network Error"
+app.use((err, req, res, next) => {
+  if (err?.message === "Not allowed by CORS") {
+    return res
+      .status(403)
+      .json({ message: "CORS blocked", code: "CORS_FORBIDDEN" });
+  }
+  const status = err.status || 500;
+  res
+    .status(status)
+    .json({ message: err.message || "Server error", code: "SERVER_ERROR" });
+});
 // Start server
 app.listen(PORT, () => {
   console.log(`Server running at http://localhost:${PORT}`);

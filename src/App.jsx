@@ -17,7 +17,7 @@ import { setCart } from "./utlis/cartSlice";
 import { getCurrentUser } from "./utlis/userSlice";
 
 function App() {
-  const url = "https://e-commerce-vkhx.onrender.com/products";
+  const url = `${import.meta.env.VITE_API_URL}/products`;
   // const url = "https://dummyjson.com/products";
 
   // getting data,loading.error with using custom hook
@@ -36,7 +36,7 @@ function App() {
     if (!checked) {
       dispatch(getCurrentUser());
     }
-  }, [dispatch]);
+  }, [dispatch, checked]);
 
   useEffect(() => {
     if (Array.isArray(data)) {
@@ -105,34 +105,3 @@ function App() {
 }
 
 export default App;
-
-// const postProducts = async () => {
-//   for (const product of data.products) {
-//     try {
-//       const newProduct = {
-//         title: product.title,
-//         description: product.description,
-//         price: product.price,
-//         rating: product.rating,
-//         tags: product.tags,
-//         thumbnail: product.thumbnail,
-//         stock: product.stock,
-//       };
-
-//       const res = await fetch("https://e-commerce-vkhx.onrender.com/products", {
-//         method: "POST",
-//         headers: {
-//           "Content-Type": "application/json",
-//         },
-//         body: JSON.stringify(newProduct),
-//       });
-
-//       if (!res.ok) {
-//         console.error(`Failed to post product: ${product.title}`);
-//       }
-//     } catch (error) {
-//       console.error(`Error posting product: ${product.title}`, error);
-//     }
-// }
-
-// postProducts(); // Trigger the post logic

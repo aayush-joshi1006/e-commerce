@@ -5,13 +5,13 @@ import {
   logoutUser,
   registerUser,
 } from "../Controller/auth.controller.js";
-import { protect } from "../middleware/auth.middleware.js";
+import { authOptional, protect } from "../middleware/auth.middleware.js";
 
-// creating seperate router for authorization 
+// creating seperate router for authorization
 const authRouter = express.Router();
 
 // paths for authorization
-authRouter.get("/", protect, currentUser);
+authRouter.get("/", authOptional, currentUser);
 authRouter.post("/login", loginUser);
 authRouter.post("/register", registerUser);
 authRouter.post("/logout", logoutUser);

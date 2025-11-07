@@ -63,7 +63,7 @@ export const loginUser = async (req, res) => {
     if (!user) {
       return res.status(404).json({ message: "User not Found" });
     }
-    // checking if password matches 
+    // checking if password matches
     const isMatched = await bcrypt.compare(password, user.password);
     if (!isMatched) {
       // in case password doesn't match
@@ -100,11 +100,7 @@ export const loginUser = async (req, res) => {
 // controller for getting current user
 export const currentUser = async (req, res) => {
   // checking if there is a user available
-  if (!req.user) {
-    return res.status(200).json({ user: null });
-  }
-
-  // If logged in, return the user object
+  if (!req.user) return res.status(200).json({ user: null, anonymous: true });
   return res.status(200).json({ user: req.user });
 };
 
